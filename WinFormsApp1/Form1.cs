@@ -10,9 +10,9 @@
             label1.Text = "";
             rectangle = new Rectangle[]
             {
-            new Rectangle(this, random.Next(0, 100),random.Next(10, 50),Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)), Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256))),
-            new Rectangle(this, random.Next(0, 100),random.Next(10, 50),Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)), Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256))),
-            new Rectangle(this, random.Next(0, 100),random.Next(10, 50),Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)), Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256))),
+            new Rectangle(this, random.Next(0, 100),random.Next(10, 50),Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)), Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)), 0),
+            new Rectangle(this, random.Next(10, 50),random.Next(10, 50),Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)), Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)),1),
+            new Rectangle(this, random.Next(0, 100),random.Next(10, 50),Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)), Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)), 0),
             };
         }
 
@@ -32,7 +32,7 @@
             {
                 if (rectangle[i].CheckPoint(new Point(e.X, e.Y)))
                 {
-                    label1.Text = "Площадь прямоугольника = " + rectangle[i].CalcArea().ToString();
+                    label1.Text = "Площадь " + rectangle[i].CalcArea();
                     rectangle[i].Draw(true);
                     MessageBox.Show("Вы нажали на треугольник");
                 }
@@ -71,10 +71,11 @@
         private Random random;
         private int width;
         private int height;
+        private int checker;
         public Rectangle(Form form, int width, int height,
-        Color fillColor, Color lineColor) : base(fillColor, lineColor)
+        Color fillColor, Color lineColor,int checker) : base(fillColor, lineColor)
         {
-            this.form = form; this.width = width; this.height = height;
+            this.form = form; this.width = width; this.height = height; this.checker = checker;
             random = new Random(width);
             CentrPoint = new Point()
             {
@@ -83,35 +84,62 @@
             };
             lineThickness = 1;
             graphics = form.CreateGraphics();
-        }
+
+         }
         public void Draw(bool fillRandom = false)
         {
             if (fillRandom)
             {
-                int x = CentrPoint.X - width / 2; int y = CentrPoint.Y - height / 2;
-                ChangeColor(
-                Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)),
-                Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256))
-                );
-                lineThickness = random.Next(0, 10);
-                graphics.FillRectangle(new SolidBrush(FillColor), x + (int)lineThickness / 2,
-                y + (int)lineThickness / 2, width, height);
-                graphics.DrawRectangle(new Pen(LineColor, lineThickness), x, y, width, height);
+                if (checker != 1)
+                {
+                    int x = CentrPoint.X - width / 2; int y = CentrPoint.Y - height / 2;
+                    ChangeColor(
+                    Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)),
+                    Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256))
+                    );
+                    lineThickness = random.Next(0, 10);
+                    graphics.FillRectangle(new SolidBrush(FillColor), x + (int)lineThickness / 2,
+                    y + (int)lineThickness / 2, width, height);
+                    graphics.DrawRectangle(new Pen(LineColor, lineThickness), x, y, width, height);
+                }
+                else
+                {
+                    int x = CentrPoint.X - width / 2; int y = CentrPoint.Y - height / 2;
+                    ChangeColor(
+                    Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)),
+                    Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256))
+                    );
+                    lineThickness = random.Next(0, 10);
+                    graphics.FillEllipse(new SolidBrush(FillColor), x + (int)lineThickness / 2,
+                    y + (int)lineThickness / 2, width, height);
+                    graphics.DrawEllipse(new Pen(LineColor, lineThickness), x, y, width, height);
+                }
             }
             else
                 Draw();
         }
         private void Draw()
         {
-            int x = CentrPoint.X - width / 2;
-            int y = CentrPoint.Y - height / 2;
-            graphics.FillRectangle(new SolidBrush(FillColor), x + (int)lineThickness / 2,
-            y + (int)lineThickness / 2, width, height);
-            graphics.DrawRectangle(new Pen(LineColor, lineThickness), x, y, width, height);
+            if (checker != 1)
+            {
+                int x = CentrPoint.X - width / 2;
+                int y = CentrPoint.Y - height / 2;
+                graphics.FillRectangle(new SolidBrush(FillColor), x + (int)lineThickness / 2,
+                y + (int)lineThickness / 2, width, height);
+                graphics.DrawRectangle(new Pen(LineColor, lineThickness), x, y, width, height);
+            }
+            else
+            {
+                int x = CentrPoint.X - width / 2;
+                int y = CentrPoint.Y - height / 2;
+                graphics.FillEllipse(new SolidBrush(FillColor), x + (int)lineThickness / 2,
+                y + (int)lineThickness / 2, width, height);
+                graphics.DrawEllipse(new Pen(LineColor, lineThickness), x, y, width, height);
+            }
         }
-        public int CalcArea()
+        public string CalcArea()
         {
-            return width * height;
+            return checker == 1 ? "круга " + Math.PI * width / 2 : "прямоугольника " + width * height;
         }
         public bool CheckPoint(Point point)
         {
