@@ -34,7 +34,7 @@
                 {
                     label1.Text = "Площадь " + rectangle[i].CalcArea();
                     rectangle[i].Draw(true);
-                    MessageBox.Show("Вы нажали на треугольник");
+                    MessageBox.Show("Вы нажали на фигуру");
                 }
             }
         }
